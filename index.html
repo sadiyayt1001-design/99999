@@ -1,81 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YouTube AI Appeal Generator</title>
-  <style>
-    body{
-      font-family: Arial, sans-serif;
-      background:#f2f2f2;
-      margin:0;
-      padding:0;
-    }
-    .container{
-      max-width:600px;
-      margin:20px auto;
-      background:#fff;
-      border-radius:10px;
-      box-shadow:0 0 15px rgba(0,0,0,0.1);
-      padding:20px;
-      position:relative;
-    }
-    h2{text-align:center;}
-    input, select, textarea, button{
-      width:100%;
-      padding:10px;
-      margin:5px 0;
-      border-radius:5px;
-      border:1px solid #ccc;
-      box-sizing:border-box;
-      font-size:16px;
-    }
-    button{
-      background:red;
-      color:#fff;
-      border:none;
-      cursor:pointer;
-      transition:0.3s;
-    }
-    button:hover{opacity:0.9;}
-    #coverPic{
-      width:100%;
-      height:150px;
-      object-fit:cover;
-      border-radius:10px 10px 0 0;
-      display:block;
-      margin-bottom:10px;
-    }
-    #channelPic{
-      width:100px;
-      height:100px;
-      border-radius:50%;
-      display:block;
-      margin:auto;
-      margin-top:-50px;
-      border:3px solid #fff;
-      object-fit:cover;
-    }
-    @media(max-width:640px){
-      #coverPic{height:120px;}
-      #channelPic{width:80px;height:80px;margin-top:-40px;}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube AI Appeal Generator</title>
+<style>
+body{
+  font-family: Arial,sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:0;
+}
+.container{
+  max-width:600px;
+  margin:20px auto;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 0 15px rgba(0,0,0,0.1);
+  padding:20px;
+  position:relative;
+}
+h2{text-align:center;margin-bottom:15px;}
+input, select, textarea, button{
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  border-radius:5px;
+  border:1px solid #ccc;
+  font-size:16px;
+  box-sizing:border-box;
+}
+button{
+  background:red;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  transition:0.3s;
+}
+button:hover{opacity:0.9;}
+#coverPic{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:10px 10px 0 0;
+  display:block;
+  margin-bottom:10px;
+}
+#channelPic{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  display:block;
+  margin:auto;
+  margin-top:-50px;
+  border:3px solid #fff;
+  object-fit:cover;
+}
+@media(max-width:640px){
+  #coverPic{height:120px;}
+  #channelPic{width:80px;height:80px;margin-top:-40px;}
+}
+</style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- Cover Photo -->
+  <!-- Admin Only Cover Photo -->
   <img id="coverPic" src="cover.jpg" alt="Cover Photo">
-  <input type="file" id="coverUpload" accept="image/*">
+  <!-- Only Admin should see this input; normal users can hide via CSS/Server check -->
+  <input type="file" id="coverUpload" accept="image/*" style="display:none;">
 
-  <!-- Profile Picture -->
+  <!-- User Profile Picture -->
   <img id="channelPic" src="" alt="Profile Picture">
   <input type="file" id="picUpload" accept="image/*">
 
-  <!-- Input Fields -->
   <h2>YouTube AI Appeal Generator</h2>
+
+  <!-- Input Fields -->
   <input id="name" placeholder="Channel Name">
   <input id="url" placeholder="Channel URL">
   <select id="monetize">
@@ -94,7 +96,12 @@
 </div>
 
 <script>
-// Cover Photo Upload
+// Admin Cover Photo Upload
+const isAdmin = true; // change false for normal users
+if(isAdmin){
+  document.getElementById("coverUpload").style.display="block";
+}
+
 document.getElementById("coverUpload").addEventListener("change", function(event){
   const file = event.target.files[0];
   if(file){
@@ -106,7 +113,7 @@ document.getElementById("coverUpload").addEventListener("change", function(event
   }
 });
 
-// Profile Picture Upload
+// Profile Picture Upload (User)
 document.getElementById("picUpload").addEventListener("change", function(event){
   const file = event.target.files[0];
   if(file){
@@ -121,7 +128,7 @@ document.getElementById("picUpload").addEventListener("change", function(event){
 // Random Function
 function randomLine(arr){return arr[Math.floor(Math.random()*arr.length)];}
 
-// Generate AI Style Appeal
+// AI Style Appeal Generator
 function generate(){
   let name=document.getElementById("name").value;
   let url=document.getElementById("url").value;
