@@ -3,15 +3,55 @@
 <head>
 <title>YouTube AI Appeal Generator</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f2f2f2;padding:20px;}
-.container{max-width:600px;margin:auto;background:#fff;padding:20px;border-radius:10px;}
-input,select,textarea{width:100%;padding:10px;margin:5px 0;border-radius:5px;border:1px solid #ccc;}
-button{background:red;color:#fff;padding:10px;border:none;width:100%;border-radius:5px;margin-top:5px;}
+body{
+  font-family: Arial,sans-serif;
+  background: #f2f2f2;
+  padding: 20px;
+}
+.container{
+  max-width: 600px;
+  margin:auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h2{text-align:center;}
+input, select, textarea, button{
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+button{
+  background: red;
+  color: #fff;
+  border:none;
+  cursor:pointer;
+}
+button:hover{
+  opacity:0.9;
+}
+#channelPic{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  display:block;
+  margin:auto;
+  margin-bottom:10px;
+  object-fit:cover;
+}
 </style>
 </head>
 <body>
+
 <div class="container">
 <h2>YouTube AI Appeal Generator</h2>
+
+<img id="channelPic" src="" alt="Channel Logo">
+<input type="file" id="picUpload" accept="image/*">
+
 <input id="name" placeholder="Channel Name">
 <input id="url" placeholder="Channel URL">
 <select id="monetize">
@@ -20,15 +60,31 @@ button{background:red;color:#fff;padding:10px;border:none;width:100%;border-radi
 </select>
 <input id="reason" placeholder="Termination Reason">
 <textarea id="explain" placeholder="Explain Your Issue"></textarea>
+
 <button onclick="generate()">Generate Appeal</button>
 <textarea id="output" rows="12" placeholder="Generated Appeal will appear here..."></textarea>
+
 <button onclick="copyText()">Copy Appeal</button>
 <button onclick="downloadText()">Download Appeal</button>
 </div>
 
 <script>
+// Picture Upload
+document.getElementById("picUpload").addEventListener("change", function(event){
+    const file = event.target.files[0];
+    if(file){
+        const reader = new FileReader();
+        reader.onload = function(e){
+            document.getElementById("channelPic").src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+// Random function
 function randomLine(arr){return arr[Math.floor(Math.random()*arr.length)];}
 
+// Generate AI Style Appeal
 function generate(){
 let name=document.getElementById("name").value;
 let url=document.getElementById("url").value;
@@ -36,22 +92,25 @@ let monetize=document.getElementById("monetize").value;
 let reason=document.getElementById("reason").value;
 let explain=document.getElementById("explain").value;
 
-// AI Style Sentences
+// Sentences Arrays
 let greetings = ["Dear YouTube Team,","Hello YouTube Support Team,","Respected YouTube Review Team,"];
 let mistakeLines = [
 "My channel may have been flagged due to a misunderstanding.",
 "I believe the termination might have occurred unintentionally.",
-"It seems my content was mistakenly identified as violating policies."
+"It seems my content was mistakenly identified as violating policies.",
+"I think there was an unintentional issue with some of my uploads."
 ];
 let promiseLines = [
 "I am committed to following all YouTube guidelines moving forward.",
 "I will carefully review all content to ensure full compliance with YouTube policies.",
-"I promise to prevent any issues in the future and maintain high-quality content."
+"I promise to prevent any issues in the future and maintain high-quality content.",
+"I will make sure my content strictly adheres to all platform rules."
 ];
 let closingLines = [
 "Thank you for your time and consideration.",
 "I sincerely appreciate your review and understanding.",
-"I kindly request a re-evaluation of my channel."
+"I kindly request a re-evaluation of my channel.",
+"Looking forward to your positive response."
 ];
 
 let text = randomLine(greetings) + "\n\n" +
@@ -82,5 +141,6 @@ link.download="youtube_appeal.txt";
 link.click();
 }
 </script>
+
 </body>
 </html>
