@@ -1,144 +1,180 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>YouTube AI Appeal Generator</title>
-<style>
-body{
-  font-family: Arial,sans-serif;
-  background: #f2f2f2;
-  padding: 20px;
-}
-.container{
-  max-width: 600px;
-  margin:auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-h2{text-align:center;}
-input, select, textarea, button{
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-button{
-  background: red;
-  color: #fff;
-  border:none;
-  cursor:pointer;
-}
-button:hover{
-  opacity:0.9;
-}
-#channelPic{
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  display:block;
-  margin:auto;
-  margin-bottom:10px;
-  object-fit:cover;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube AI Appeal Generator</title>
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f2f2f2;
+      margin:0;
+      padding:0;
+    }
+    .container{
+      max-width:600px;
+      margin:20px auto;
+      background:#fff;
+      border-radius:10px;
+      box-shadow:0 0 15px rgba(0,0,0,0.1);
+      padding:20px;
+      position:relative;
+    }
+    h2{text-align:center;}
+    input, select, textarea, button{
+      width:100%;
+      padding:10px;
+      margin:5px 0;
+      border-radius:5px;
+      border:1px solid #ccc;
+      box-sizing:border-box;
+      font-size:16px;
+    }
+    button{
+      background:red;
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      transition:0.3s;
+    }
+    button:hover{opacity:0.9;}
+    #coverPic{
+      width:100%;
+      height:150px;
+      object-fit:cover;
+      border-radius:10px 10px 0 0;
+      display:block;
+      margin-bottom:10px;
+    }
+    #channelPic{
+      width:100px;
+      height:100px;
+      border-radius:50%;
+      display:block;
+      margin:auto;
+      margin-top:-50px;
+      border:3px solid #fff;
+      object-fit:cover;
+    }
+    @media(max-width:640px){
+      #coverPic{height:120px;}
+      #channelPic{width:80px;height:80px;margin-top:-40px;}
+    }
+  </style>
 </head>
 <body>
 
 <div class="container">
-<h2>YouTube AI Appeal Generator</h2>
 
-<img id="channelPic" src="" alt="Channel Logo">
-<input type="file" id="picUpload" accept="image/*">
+  <!-- Cover Photo -->
+  <img id="coverPic" src="cover.jpg" alt="Cover Photo">
+  <input type="file" id="coverUpload" accept="image/*">
 
-<input id="name" placeholder="Channel Name">
-<input id="url" placeholder="Channel URL">
-<select id="monetize">
-<option>Monetized</option>
-<option>Non Monetized</option>
-</select>
-<input id="reason" placeholder="Termination Reason">
-<textarea id="explain" placeholder="Explain Your Issue"></textarea>
+  <!-- Profile Picture -->
+  <img id="channelPic" src="" alt="Profile Picture">
+  <input type="file" id="picUpload" accept="image/*">
 
-<button onclick="generate()">Generate Appeal</button>
-<textarea id="output" rows="12" placeholder="Generated Appeal will appear here..."></textarea>
+  <!-- Input Fields -->
+  <h2>YouTube AI Appeal Generator</h2>
+  <input id="name" placeholder="Channel Name">
+  <input id="url" placeholder="Channel URL">
+  <select id="monetize">
+    <option>Monetized</option>
+    <option>Non Monetized</option>
+  </select>
+  <input id="reason" placeholder="Termination Reason">
+  <textarea id="explain" placeholder="Explain Your Issue"></textarea>
 
-<button onclick="copyText()">Copy Appeal</button>
-<button onclick="downloadText()">Download Appeal</button>
+  <!-- Buttons & Output -->
+  <button onclick="generate()">Generate Appeal</button>
+  <textarea id="output" rows="12" placeholder="Generated Appeal will appear here..."></textarea>
+  <button onclick="copyText()">Copy Appeal</button>
+  <button onclick="downloadText()">Download Appeal</button>
+
 </div>
 
 <script>
-// Picture Upload
-document.getElementById("picUpload").addEventListener("change", function(event){
-    const file = event.target.files[0];
-    if(file){
-        const reader = new FileReader();
-        reader.onload = function(e){
-            document.getElementById("channelPic").src = e.target.result;
-        }
-        reader.readAsDataURL(file);
+// Cover Photo Upload
+document.getElementById("coverUpload").addEventListener("change", function(event){
+  const file = event.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      document.getElementById("coverPic").src = e.target.result;
     }
+    reader.readAsDataURL(file);
+  }
 });
 
-// Random function
+// Profile Picture Upload
+document.getElementById("picUpload").addEventListener("change", function(event){
+  const file = event.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      document.getElementById("channelPic").src = e.target.result;
+    }
+    reader.readAsDataURL(file);
+  }
+});
+
+// Random Function
 function randomLine(arr){return arr[Math.floor(Math.random()*arr.length)];}
 
 // Generate AI Style Appeal
 function generate(){
-let name=document.getElementById("name").value;
-let url=document.getElementById("url").value;
-let monetize=document.getElementById("monetize").value;
-let reason=document.getElementById("reason").value;
-let explain=document.getElementById("explain").value;
+  let name=document.getElementById("name").value;
+  let url=document.getElementById("url").value;
+  let monetize=document.getElementById("monetize").value;
+  let reason=document.getElementById("reason").value;
+  let explain=document.getElementById("explain").value;
 
-// Sentences Arrays
-let greetings = ["Dear YouTube Team,","Hello YouTube Support Team,","Respected YouTube Review Team,"];
-let mistakeLines = [
-"My channel may have been flagged due to a misunderstanding.",
-"I believe the termination might have occurred unintentionally.",
-"It seems my content was mistakenly identified as violating policies.",
-"I think there was an unintentional issue with some of my uploads."
-];
-let promiseLines = [
-"I am committed to following all YouTube guidelines moving forward.",
-"I will carefully review all content to ensure full compliance with YouTube policies.",
-"I promise to prevent any issues in the future and maintain high-quality content.",
-"I will make sure my content strictly adheres to all platform rules."
-];
-let closingLines = [
-"Thank you for your time and consideration.",
-"I sincerely appreciate your review and understanding.",
-"I kindly request a re-evaluation of my channel.",
-"Looking forward to your positive response."
-];
+  let greetings = ["Dear YouTube Team,","Hello YouTube Support Team,","Respected YouTube Review Team,"];
+  let mistakeLines = [
+    "My channel may have been flagged due to a misunderstanding.",
+    "I believe the termination might have occurred unintentionally.",
+    "It seems my content was mistakenly identified as violating policies.",
+    "I think there was an unintentional issue with some of my uploads."
+  ];
+  let promiseLines = [
+    "I am committed to following all YouTube guidelines moving forward.",
+    "I will carefully review all content to ensure full compliance with YouTube policies.",
+    "I promise to prevent any issues in the future and maintain high-quality content.",
+    "I will make sure my content strictly adheres to all platform rules."
+  ];
+  let closingLines = [
+    "Thank you for your time and consideration.",
+    "I sincerely appreciate your review and understanding.",
+    "I kindly request a re-evaluation of my channel.",
+    "Looking forward to your positive response."
+  ];
 
-let text = randomLine(greetings) + "\n\n" +
-"My channel \"" + name + "\" (" + url + ") was terminated due to " + reason + ". My channel was " + monetize + ".\n\n" +
-randomLine(mistakeLines) + " " + explain + "\n\n" +
-randomLine(promiseLines) + "\n\n" +
-randomLine(closingLines);
+  let text = randomLine(greetings) + "\n\n" +
+    "My channel \"" + name + "\" (" + url + ") was terminated due to " + reason + ". My channel was " + monetize + ".\n\n" +
+    randomLine(mistakeLines) + " " + explain + "\n\n" +
+    randomLine(promiseLines) + "\n\n" +
+    randomLine(closingLines);
 
-document.getElementById("output").value=text;
+  document.getElementById("output").value=text;
 }
 
-// Copy Button
+// Copy Appeal
 function copyText(){
-let copyText=document.getElementById("output");
-copyText.select();
-copyText.setSelectionRange(0,99999);
-document.execCommand("copy");
-alert("Appeal Copied Successfully!");
+  let copyText=document.getElementById("output");
+  copyText.select();
+  copyText.setSelectionRange(0,99999);
+  document.execCommand("copy");
+  alert("Appeal Copied Successfully!");
 }
 
-// Download Button
+// Download Appeal as TXT
 function downloadText(){
-let text=document.getElementById("output").value;
-let blob=new Blob([text],{type:"text/plain"});
-let link=document.createElement("a");
-link.href=window.URL.createObjectURL(blob);
-link.download="youtube_appeal.txt";
-link.click();
+  let text=document.getElementById("output").value;
+  let blob=new Blob([text],{type:"text/plain"});
+  let link=document.createElement("a");
+  link.href=window.URL.createObjectURL(blob);
+  link.download="youtube_appeal.txt";
+  link.click();
 }
 </script>
 
