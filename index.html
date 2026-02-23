@@ -1,50 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>YouTube AI Appeal Generator</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f2f2f2;padding:20px;}
+.container{max-width:600px;margin:auto;background:#fff;padding:20px;border-radius:10px;}
+input,select,textarea{width:100%;padding:10px;margin:5px 0;border-radius:5px;border:1px solid #ccc;}
+button{background:red;color:#fff;padding:10px;border:none;width:100%;border-radius:5px;margin-top:5px;}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>YouTube AI Appeal Generator</h2>
+<input id="name" placeholder="Channel Name">
+<input id="url" placeholder="Channel URL">
+<select id="monetize">
+<option>Monetized</option>
+<option>Non Monetized</option>
+</select>
+<input id="reason" placeholder="Termination Reason">
+<textarea id="explain" placeholder="Explain Your Issue"></textarea>
+<button onclick="generate()">Generate Appeal</button>
+<textarea id="output" rows="12" placeholder="Generated Appeal will appear here..."></textarea>
+<button onclick="copyText()">Copy Appeal</button>
+<button onclick="downloadText()">Download Appeal</button>
+</div>
+
 <script>
+function randomLine(arr){return arr[Math.floor(Math.random()*arr.length)];}
 
 function generate(){
-
 let name=document.getElementById("name").value;
 let url=document.getElementById("url").value;
 let monetize=document.getElementById("monetize").value;
 let reason=document.getElementById("reason").value;
 let explain=document.getElementById("explain").value;
 
-let greetings = [
-"Dear YouTube Team,",
-"Hello YouTube Support Team,",
-"Respected YouTube Review Team,"
-];
-
+// AI Style Sentences
+let greetings = ["Dear YouTube Team,","Hello YouTube Support Team,","Respected YouTube Review Team,"];
 let mistakeLines = [
-"I believe this action may have been taken due to a misunderstanding.",
-"I respectfully believe this termination could be an error.",
-"I think the system may have mistakenly flagged my channel."
+"My channel may have been flagged due to a misunderstanding.",
+"I believe the termination might have occurred unintentionally.",
+"It seems my content was mistakenly identified as violating policies."
 ];
-
 let promiseLines = [
-"I assure you that I will strictly follow all YouTube policies in the future.",
-"I am fully committed to complying with YouTube Community Guidelines.",
-"I will carefully review and improve my content to meet all platform standards."
+"I am committed to following all YouTube guidelines moving forward.",
+"I will carefully review all content to ensure full compliance with YouTube policies.",
+"I promise to prevent any issues in the future and maintain high-quality content."
 ];
-
 let closingLines = [
 "Thank you for your time and consideration.",
-"I sincerely appreciate your review.",
-"I kindly request another review of my channel."
+"I sincerely appreciate your review and understanding.",
+"I kindly request a re-evaluation of my channel."
 ];
 
-function randomLine(array){
-return array[Math.floor(Math.random() * array.length)];
-}
-
-let text =
-randomLine(greetings) + "\n\n" +
-"My channel " + name + " (" + url + ") was terminated due to " + reason + ". My channel was " + monetize + ".\n\n" +
+let text = randomLine(greetings) + "\n\n" +
+"My channel \"" + name + "\" (" + url + ") was terminated due to " + reason + ". My channel was " + monetize + ".\n\n" +
 randomLine(mistakeLines) + " " + explain + "\n\n" +
 randomLine(promiseLines) + "\n\n" +
 randomLine(closingLines);
 
 document.getElementById("output").value=text;
-
 }
 
+// Copy Button
+function copyText(){
+let copyText=document.getElementById("output");
+copyText.select();
+copyText.setSelectionRange(0,99999);
+document.execCommand("copy");
+alert("Appeal Copied Successfully!");
+}
+
+// Download Button
+function downloadText(){
+let text=document.getElementById("output").value;
+let blob=new Blob([text],{type:"text/plain"});
+let link=document.createElement("a");
+link.href=window.URL.createObjectURL(blob);
+link.download="youtube_appeal.txt";
+link.click();
+}
 </script>
+</body>
+</html>
